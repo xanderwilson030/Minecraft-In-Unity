@@ -87,7 +87,7 @@ TextureImporter:
       213: 6179371390308343912
     second: inventory_blocks_27
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -107,6 +107,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -116,11 +118,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -138,9 +140,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -180,6 +187,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -791,6 +810,35 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      inventory_blocks_11: 3797724474009924490
+      inventory_blocks_2: 4347022757924265544
+      inventory_blocks_10: 7146671257147626644
+      inventory_blocks_0: 6290228581286280454
+      inventory_blocks_9: 3437005191386559348
+      inventory_blocks_26: -2892804081382087919
+      inventory_blocks_8: 7376816667998541328
+      inventory_blocks_12: 1682659500886967320
+      inventory_blocks_20: 4853403385308016598
+      inventory_blocks_14: 2004502798635202613
+      inventory_blocks_25: -7718115664955211060
+      inventory_blocks_27: 6179371390308343912
+      inventory_blocks_3: 4524727915027842835
+      inventory_blocks_23: -4083997495578790682
+      inventory_blocks_19: 7859007549255669370
+      inventory_blocks_6: -6797136639139214666
+      inventory_blocks_1: -6483171052840428481
+      inventory_blocks_13: 7520052159148803748
+      inventory_blocks_17: 3378433809671899255
+      inventory_blocks_21: -5692914997915182632
+      inventory_blocks_16: 6003265221490092949
+      inventory_blocks_24: -8494814419833703786
+      inventory_blocks_7: -2880929373543595194
+      inventory_blocks_4: -1268419253488695845
+      inventory_blocks_22: -1972781154373990503
+      inventory_blocks_15: -3290769854734579307
+      inventory_blocks_5: 9079274360541649239
+      inventory_blocks_18: 8607681002750936385
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
