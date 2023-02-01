@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -18,6 +19,17 @@ public class PlayerController : MonoBehaviour
 	public int m_AntiBunnyHopFactor = 1;
 	public float mouseSens = 7;
 	public Transform cam;
+
+	// Adding custom values for food
+	public float m_TotalHungerPoints = 20.0f;
+	public float m_CurrentHungerPoints;
+	public float m_ExhuastionLevel;
+
+	public RawImage[] foodShanks = new RawImage[10];
+
+	float m_sprinting = .1f;
+	float m_hunger = .005f;
+
 
 	float angle = 0;
 
@@ -46,6 +58,10 @@ public class PlayerController : MonoBehaviour
 		m_RayDistance = m_Controller.height * .5f + m_Controller.radius;
 		m_SlideLimit = m_Controller.slopeLimit - .1f;
 		m_JumpTimer = m_AntiBunnyHopFactor;
+
+		// My Code
+		m_CurrentHungerPoints = m_TotalHungerPoints;
+		m_ExhuastionLevel = 0f;
 	}
 
 	public void Update()
@@ -59,6 +75,7 @@ public class PlayerController : MonoBehaviour
 		{
 			Cursor.visible = false;
 			Cursor.lockState = CursorLockMode.Locked;
+
 			return;
 		}
 	}
@@ -98,6 +115,9 @@ public class PlayerController : MonoBehaviour
 	{
 		if (PauseMenu.pauseMenu.paused || GetComponent<PlayerIO>().inventory.activeSelf || !controlsEnabled) return;
 
+		// My Code
+		m_ExhuastionLevel += m_hunger;
+
 		float inputX = Input.GetAxis("Horizontal");
 		float inputY = Input.GetAxis("Vertical");
 
@@ -132,6 +152,14 @@ public class PlayerController : MonoBehaviour
 			if (!m_ToggleRun)
 			{
 				m_Speed = Input.GetKey(KeyCode.LeftShift) ? m_RunSpeed : m_WalkSpeed;
+
+
+				// My Code
+				if (m_Speed == m_RunSpeed)
+                {
+					m_ExhuastionLevel += m_sprinting;
+                }
+
 			}
 			if ((sliding && m_SlideWhenOverSlopeLimit) || (m_SlideOnTaggedObjects && m_Hit.collider.tag == "Slide"))
 			{
@@ -175,6 +203,8 @@ public class PlayerController : MonoBehaviour
 		m_MoveDirection.y -= m_Gravity * Time.deltaTime;
 		m_Grounded = (m_Controller.Move(m_MoveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
 
+		UpdateHunger(m_ExhuastionLevel);
+
 		Look();
 	}
 
@@ -193,4 +223,57 @@ public class PlayerController : MonoBehaviour
 			World.currentWorld.SpawnLandParticles();
 		}
 	}
+
+	void UpdateHunger(float currentExhaustion)
+    {
+		if (currentExhaustion >= 4)
+        {
+			m_ExhuastionLevel -= 4;
+			m_CurrentHungerPoints -= 1;
+        }
+
+		Debug.Log(m_CurrentHungerPoints);
+		Debug.Log(m_ExhuastionLevel);
+
+
+        switch (m_CurrentHungerPoints)
+        {
+			case 20:
+
+				break;
+			case 18:
+				foodShanks[9].gameObject.SetActive(false);
+				break;
+			case 16:
+				foodShanks[8].gameObject.SetActive(false);
+				break;
+			case 14:
+				foodShanks[7].gameObject.SetActive(false);
+				break;
+			case 12:
+				foodShanks[6].gameObject.SetActive(false);
+				break;
+			case 10:
+				foodShanks[5].gameObject.SetActive(false);
+				break;
+			case 8:
+				foodShanks[4].gameObject.SetActive(false);
+				break;
+			case 6:
+				foodShanks[3].gameObject.SetActive(false);
+				break;
+			case 4:
+				foodShanks[2].gameObject.SetActive(false);
+				break;
+			case 2:
+				foodShanks[1].gameObject.SetActive(false);
+				break;
+			case 0:
+				foodShanks[0].gameObject.SetActive(false);
+				break;
+			default:
+				break;
+
+		}
+    }
 }
