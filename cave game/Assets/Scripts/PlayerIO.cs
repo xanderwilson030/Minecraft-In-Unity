@@ -25,9 +25,15 @@ public class PlayerIO : MonoBehaviour
 
 	public GameObject inventory;
 
+	// My Code
+	PlayerController curPlayer;
+	public AudioClip beefEating;
+	public AudioSource emitter;
+
 	void Start()
 	{
 		world = World.currentWorld;
+		curPlayer = gameObject.GetComponent<PlayerController>();
 	}
 
 	void Update()
@@ -172,85 +178,97 @@ public class PlayerIO : MonoBehaviour
 			{
 				byte newBlock = hotbarBlocks[currentSlot];
 
-				if (!retAdd.GetComponent<AddReticule>().touchingPlayer)
-				{
+				// My code
+				if (newBlock == 34)
+                {
+					emitter.Play();
+					curPlayer.IncreaseHunger(2);
+					return;
 
-					world.PlaceBlock(blockAddX, blockAddY, blockAddZ, newBlock);
-
-					SoundManager.PlayAudio(blockSounds[newBlock - 1] + Random.Range(1, 5).ToString(), 0.2f, Random.Range(0.9f, 1.1f));
-
-					Chunk chunk = hit.collider.gameObject.GetComponent<Chunk>();
-
-					int cX = blockDelX - (int)chunk.transform.position.x;
-					int cY = blockDelY - (int)chunk.transform.position.y;
-					int cZ = blockDelZ - (int)chunk.transform.position.z;
-
-					Vector3Int cPos = new Vector3Int(Mathf.FloorToInt(blockDelX / 16f),
-						Mathf.FloorToInt(blockDelY / 16f), Mathf.FloorToInt(blockDelZ / 16f));
-
-					if (cX == 0)
+                }
+                else
+                {
+					if (!retAdd.GetComponent<AddReticule>().touchingPlayer)
 					{
-						if (world.ChunkIsWithinBounds(cPos.x - 1, cPos.y, cPos.z))
+
+						world.PlaceBlock(blockAddX, blockAddY, blockAddZ, newBlock);
+
+						SoundManager.PlayAudio(blockSounds[newBlock - 1] + Random.Range(1, 5).ToString(), 0.2f, Random.Range(0.9f, 1.1f));
+
+						Chunk chunk = hit.collider.gameObject.GetComponent<Chunk>();
+
+						int cX = blockDelX - (int)chunk.transform.position.x;
+						int cY = blockDelY - (int)chunk.transform.position.y;
+						int cZ = blockDelZ - (int)chunk.transform.position.z;
+
+						Vector3Int cPos = new Vector3Int(Mathf.FloorToInt(blockDelX / 16f),
+							Mathf.FloorToInt(blockDelY / 16f), Mathf.FloorToInt(blockDelZ / 16f));
+
+						if (cX == 0)
 						{
-							if (world.ChunkExistsAt(cPos.x - 1, cPos.y, cPos.z))
-								world.chunks[cPos.x - 1, cPos.y, cPos.z].Regenerate();
-							else
-								world.ForceLoadChunkAt(cPos.x - 1, cPos.y, cPos.z);
+							if (world.ChunkIsWithinBounds(cPos.x - 1, cPos.y, cPos.z))
+							{
+								if (world.ChunkExistsAt(cPos.x - 1, cPos.y, cPos.z))
+									world.chunks[cPos.x - 1, cPos.y, cPos.z].Regenerate();
+								else
+									world.ForceLoadChunkAt(cPos.x - 1, cPos.y, cPos.z);
+							}
 						}
-					}
-					else if (cX == world.chunkSize - 1)
-					{
-						if (world.ChunkIsWithinBounds(cPos.x + 1, cPos.y, cPos.z))
+						else if (cX == world.chunkSize - 1)
 						{
-							if (world.ChunkExistsAt(cPos.x + 1, cPos.y, cPos.z))
-								world.chunks[cPos.x + 1, cPos.y, cPos.z].Regenerate();
-							else
-								world.ForceLoadChunkAt(cPos.x + 1, cPos.y, cPos.z);
+							if (world.ChunkIsWithinBounds(cPos.x + 1, cPos.y, cPos.z))
+							{
+								if (world.ChunkExistsAt(cPos.x + 1, cPos.y, cPos.z))
+									world.chunks[cPos.x + 1, cPos.y, cPos.z].Regenerate();
+								else
+									world.ForceLoadChunkAt(cPos.x + 1, cPos.y, cPos.z);
+							}
 						}
-					}
 
-					if (cY == world.chunkSize - 1)
-					{
-						if (world.ChunkIsWithinBounds(cPos.x, cPos.y + 1, cPos.z))
+						if (cY == world.chunkSize - 1)
 						{
-							if (world.ChunkExistsAt(cPos.x, cPos.y + 1, cPos.z))
-								world.chunks[cPos.x, cPos.y + 1, cPos.z].Regenerate();
-							else
-								world.ForceLoadChunkAt(cPos.x, cPos.y + 1, cPos.z);
+							if (world.ChunkIsWithinBounds(cPos.x, cPos.y + 1, cPos.z))
+							{
+								if (world.ChunkExistsAt(cPos.x, cPos.y + 1, cPos.z))
+									world.chunks[cPos.x, cPos.y + 1, cPos.z].Regenerate();
+								else
+									world.ForceLoadChunkAt(cPos.x, cPos.y + 1, cPos.z);
+							}
 						}
-					}
 
-					if (cZ == 0)
-					{
-						if (world.ChunkIsWithinBounds(cPos.x, cPos.y, cPos.z - 1))
+						if (cZ == 0)
 						{
-							if (world.ChunkExistsAt(cPos.x, cPos.y, cPos.z - 1))
-								world.chunks[cPos.x, cPos.y, cPos.z - 1].Regenerate();
-							else
-								world.ForceLoadChunkAt(cPos.x, cPos.y, cPos.z - 1);
+							if (world.ChunkIsWithinBounds(cPos.x, cPos.y, cPos.z - 1))
+							{
+								if (world.ChunkExistsAt(cPos.x, cPos.y, cPos.z - 1))
+									world.chunks[cPos.x, cPos.y, cPos.z - 1].Regenerate();
+								else
+									world.ForceLoadChunkAt(cPos.x, cPos.y, cPos.z - 1);
+							}
 						}
-					}
-					else if (cZ == world.chunkSize - 1)
-					{
-						if (world.ChunkIsWithinBounds(cPos.x, cPos.y, cPos.z + 1))
+						else if (cZ == world.chunkSize - 1)
 						{
-							if (world.ChunkExistsAt(cPos.x, cPos.y, cPos.z + 1))
-								world.chunks[cPos.x, cPos.y, cPos.z + 1].Regenerate();
-							else
-								world.ForceLoadChunkAt(cPos.x, cPos.y, cPos.z + 1);
+							if (world.ChunkIsWithinBounds(cPos.x, cPos.y, cPos.z + 1))
+							{
+								if (world.ChunkExistsAt(cPos.x, cPos.y, cPos.z + 1))
+									world.chunks[cPos.x, cPos.y, cPos.z + 1].Regenerate();
+								else
+									world.ForceLoadChunkAt(cPos.x, cPos.y, cPos.z + 1);
+							}
 						}
-					}
 
-					for (int y = cPos.y; y >= 0; y--)
-					{
-						if (world.ChunkExistsAt(cPos.x, y, cPos.z))
-							world.chunks[cPos.x, y, cPos.z].Regenerate();
-						else
-							world.ForceLoadChunkAt(cPos.x, y, cPos.z);
-					}
+						for (int y = cPos.y; y >= 0; y--)
+						{
+							if (world.ChunkExistsAt(cPos.x, y, cPos.z))
+								world.chunks[cPos.x, y, cPos.z].Regenerate();
+							else
+								world.ForceLoadChunkAt(cPos.x, y, cPos.z);
+						}
 
-					chunk.Regenerate();
+						chunk.Regenerate();
+					}
 				}
+				
 			}
 			if (Input.GetMouseButtonDown(2))
 			{
@@ -305,9 +323,20 @@ public class PlayerIO : MonoBehaviour
 
 	public void SetHotbarBlock(int block)
 	{
-		if (block == 0) block++;
-		if (HotbarContainsBlock((byte)block)) currentSlot = GetHotbarSlotWith(block);
-		else hotbarBlocks[currentSlot] = (byte)block;
+		Debug.Log("Block number is: " + block);
+		if (block == 0)
+		{
+			block++;
+		}
+
+		if (HotbarContainsBlock((byte)block))
+		{
+			currentSlot = GetHotbarSlotWith(block);
+		}
+		else
+		{
+			hotbarBlocks[currentSlot] = (byte)block;
+		}
 	}
 
 	public void CloseInventory()

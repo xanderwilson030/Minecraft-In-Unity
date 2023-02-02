@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
 		if (PauseMenu.pauseMenu.paused || GetComponent<PlayerIO>().inventory.activeSelf || !controlsEnabled) return;
 
 		// My Code
-		m_ExhuastionLevel += m_hunger;
+		m_ExhuastionLevel += m_hunger * Time.deltaTime;
 
 		float inputX = Input.GetAxis("Horizontal");
 		float inputY = Input.GetAxis("Vertical");
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
 				// My Code
 				if (m_Speed == m_RunSpeed)
                 {
-					m_ExhuastionLevel += m_sprinting;
+					m_ExhuastionLevel += m_sprinting * Time.deltaTime;
                 }
 
 			}
@@ -232,8 +232,8 @@ public class PlayerController : MonoBehaviour
 			m_CurrentHungerPoints -= 1;
         }
 
-		Debug.Log(m_CurrentHungerPoints);
-		Debug.Log(m_ExhuastionLevel);
+		//Debug.Log(m_CurrentHungerPoints);
+		//Debug.Log(m_ExhuastionLevel);
 
 
         switch (m_CurrentHungerPoints)
@@ -276,4 +276,51 @@ public class PlayerController : MonoBehaviour
 
 		}
     }
+
+	public void IncreaseHunger(int amount)
+    {
+		Debug.Log("Player is eating and increases hunger by: " + amount);
+		
+		if (amount + m_CurrentHungerPoints <= 20)
+        {
+			m_CurrentHungerPoints += amount;
+        }
+
+		switch (m_CurrentHungerPoints)
+		{
+			case 20:
+				foodShanks[9].gameObject.SetActive(true);
+				break;
+			case 18:
+				foodShanks[8].gameObject.SetActive(true);
+				break;
+			case 16:
+				foodShanks[7].gameObject.SetActive(true);
+				break;
+			case 14:
+				foodShanks[6].gameObject.SetActive(true);
+				break;
+			case 12:
+				foodShanks[5].gameObject.SetActive(true);
+				break;
+			case 10:
+				foodShanks[4].gameObject.SetActive(true);
+				break;
+			case 8:
+				foodShanks[3].gameObject.SetActive(true);
+				break;
+			case 6:
+				foodShanks[2].gameObject.SetActive(true);
+				break;
+			case 4:
+				foodShanks[1].gameObject.SetActive(true);
+				break;
+			case 2:
+				foodShanks[0].gameObject.SetActive(true);
+				break;
+			default:
+				break;
+
+		}
+	}
 }
